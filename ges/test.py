@@ -11,7 +11,8 @@ url = "wasbs://" + containerName + "@" + storageAccountName + ".blob.core.window
 config = "fs.azure.sas." + containerName+ "." + storageAccountName + ".blob.core.windows.net"
 mountPoint = "/mnt/demo"
 
-# dbutils.fs.unmount("/mnt/demo")
+if(len(dbutils.fs.ls("/mnt/demo")) == 0):
+    dbutils.fs.unmount("/mnt/demo")
 dbutils.fs.mount(
   source = url,
   mount_point = mountPoint,
