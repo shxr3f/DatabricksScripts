@@ -25,6 +25,7 @@ display(dbutils.fs.ls("/mnt/demo"))
 import pdfplumber
 import re
 import pandas as pd
+import numpy as np
 
 text = ""
 
@@ -37,6 +38,9 @@ listFiles = dbutils.fs.ls("/mnt/demo/ges/nus/")
 dataFrame = pd.DataFrame(columns=['university','survey_year','degree','employment_percentage','ft_employment_percentage','basic_mean','basic_median','gross_mean','gross_median','gross_low', 'gross_high'])
 
 for fileName in listFiles:
+    stringDegrees = ""
+    listDegrees = []
+    listStats = []
     path = r'/dbfs/mnt/demo/ges/nus/' + fileName.name
     with pdfplumber.open(path) as pdf:
         count = 0
@@ -46,8 +50,8 @@ for fileName in listFiles:
                 year = int(re.search(r'(?<=NUS:\s)\d+',text).group(0))
                 print("year = ", year)
             count = 1
-            list = re.finditer(r'([\.\d]+%\s){2}(\$[,\d]+\s){6}',text)
-            list2 = re.finditer(r'(^(Bachelor)[a-zA-Z\(\)\s]+)|(^[^\d\n]*)',text, flags=re.MULTILINE)
+            list = re.finditer(r'(([\.\d]+%\s){2}(\$[,\d]+\s){6})|((N\.A\.\s){8})',text)
+            list2 = re.finditer(r'(^(Bachelor)[a-zA-Z\(\)\s]+(\s{2,}))|(^[^\d\n]*)',text, flags=re.MULTILINE)
             for row in list:
                 listStats.append(row.group(0).replace(',','').replace('$','').replace('%','').strip())
 
@@ -55,7 +59,8 @@ for fileName in listFiles:
             for row in list2:
                 if("school" in row.group(0).strip().lower() or 
                     "faculty" in row.group(0).strip().lower() or
-                    "programme" in row.group(0).strip().lower() or  
+                    "programme" in row.group(0).strip().lower() or
+                    "n.a." in row.group(0).strip().lower() or
                     row.group(0).strip() == ""):
                     continue
                 else:
@@ -72,7 +77,7 @@ for fileName in listFiles:
         row.append(listDegrees[x])
         row.extend(statList)
         dataFrame.loc[len(dataFrame.index)] = row
-
+dataFrame.replace('N.A.', '0', inplace=True)
 dataFrame = dataFrame.astype({'employment_percentage':'float','ft_employment_percentage':'float','basic_mean':'int','basic_median':'int','gross_mean':'int','gross_median':'int','gross_low':'int','gross_high':'int'})
 
 print(dataFrame)
