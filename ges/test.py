@@ -101,3 +101,8 @@ except Exception as e:
         raise Exception('Error establishing connection with Database: ' + str(e))
 
 dataFrame.to_sql('ges_salary_table',engine, if_exists='append',index=False)
+
+# COMMAND ----------
+
+for filename in dbutils.fs.ls("/mnt/demo/ges/nus/"):
+    dbutils.fs.mv(filename.path,'/mnt/demo/ges-archive/nus/' + filename.name)
