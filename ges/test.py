@@ -1,6 +1,7 @@
 # Databricks notebook source
 # MAGIC %pip install pdfplumber
 # MAGIC %pip install psycopg2-binary==2.9.5
+# MAGIC %pip install sqlalchemy
 
 # COMMAND ----------
 
