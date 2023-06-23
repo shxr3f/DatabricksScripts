@@ -7,19 +7,19 @@
 
 containerName = "landing"
 storageAccountName = "sharifstdataplatform"
-sas = "?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2023-06-20T12:25:42Z&st=2023-06-20T04:25:42Z&spr=https&sig=0JLn%2FxQ4sAX%2FZqk7bN5%2FXson36jSM0jpqPb24S%2BQXpw%3D"
+sas = "?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2023-06-23T08:14:57Z&st=2023-06-23T00:14:57Z&spr=https,http&sig=dYQkpp%2B3du%2B0pMhnxtaPMDH0yEDiFcfgJ2nC7h6YcQ8%3D"
 url = "wasbs://" + containerName + "@" + storageAccountName + ".blob.core.windows.net/"
 config = "fs.azure.sas." + containerName+ "." + storageAccountName + ".blob.core.windows.net"
 mountPoint = "/mnt/demo"
 
-if(len(dbutils.fs.ls("/mnt/demo")) != 0):
+if any(mount.mountPoint == "/mnt/demo" for mount in dbutils.fs.mounts()):
     dbutils.fs.unmount("/mnt/demo")
 dbutils.fs.mount(
   source = url,
   mount_point = mountPoint,
   extra_configs = {config:sas})
 
-display(dbutils.fs.ls("/mnt/demo"))
+display(dbutils.fs.ls("/mnt/"))
 
 # COMMAND ----------
 
