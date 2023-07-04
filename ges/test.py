@@ -7,7 +7,7 @@
 
 containerName = "landing"
 storageAccountName = "sharifstdataplatform"
-sas = "?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2023-06-23T08:14:57Z&st=2023-06-23T00:14:57Z&spr=https,http&sig=dYQkpp%2B3du%2B0pMhnxtaPMDH0yEDiFcfgJ2nC7h6YcQ8%3D"
+sas = "?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2023-07-05T11:28:04Z&st=2023-07-04T03:28:04Z&spr=https,http&sig=A66xaIZDSSEyZoT8nUI9XCDN2YapbceQpdJeiomiqTk%3D"
 url = "wasbs://" + containerName + "@" + storageAccountName + ".blob.core.windows.net/"
 config = "fs.azure.sas." + containerName+ "." + storageAccountName + ".blob.core.windows.net"
 mountPoint = "/mnt/demo"
